@@ -5,7 +5,7 @@ from aiogram.dispatcher import Dispatcher
 
 storage = MemoryStorage()
 
-TOKEN = '6607850427:AAGpmWl0homidZ-M2gVy7Sk-ZQ-9zzbpFHg'
+TOKEN = '7100750803:AAESFIRhXP4kasVrnmGJTFPpUrtRuXs0GYA'
 
 LIST_ADMINS = (6133947978,)
 

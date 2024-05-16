@@ -5,8 +5,8 @@ from aiogram.dispatcher.middlewares import BaseMiddleware
 from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 from dispather import bot, dp
 
-chanel_id = -1002093034927
-chanel_url = 'https://t.me/tteett221'
+chanel_id = -1002014371596
+chanel_url = 'https://t.me/+xoB1r2ptGt8yNGVi'
 
 
 class BlockMiddleware(BaseMiddleware):
