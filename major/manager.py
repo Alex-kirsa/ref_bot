@@ -21,7 +21,7 @@ class Msg(Buttons):
             await bot.send_photo(self.chat_id,
                                  photo=self.data_mapping['photo'],
                                  caption=self.data_mapping['text'],
-                                 reply_markup=self.data_mapping['reply_markup'])
+                                 reply_markup=self.data_mapping['reply_markup'],)
         elif self.data_mapping.get('reply_markup'):
             try:
                 await bot.edit_message_text(

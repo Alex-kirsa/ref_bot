@@ -7,3 +7,6 @@ class UserStates(StatesGroup):
     mailing = State()
     photo = State()
     task = State()
+    user = State()
+    create_mail = State()
+    mail_photo = State()

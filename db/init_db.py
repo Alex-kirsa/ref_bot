@@ -27,14 +27,15 @@ class __CreateTable:
                 text TEXT,
                 photo TEXT,
                 goal INTEGER,
-                active BOOL
+                active BOOL,
+                done_text TEXT
                 );''',
             "user_tasks": '''
                 CREATE TABLE IF NOT EXISTS user_tasks
                 (Id INTEGER UNIQUE PRIMARY KEY AUTOINCREMENT,
                 User_id INTEGER,
                 task_id INTEGER,
-                active BOOL
+                active BOOL DEFAULT True
                 );''',
             'invited': '''
             CREATE TABLE IF NOT EXISTS invited

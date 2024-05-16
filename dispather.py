@@ -9,6 +9,6 @@ TOKEN = '6607850427:AAGpmWl0homidZ-M2gVy7Sk-ZQ-9zzbpFHg'
 
 LIST_ADMINS = (6133947978,)
 
-bot = Bot(token=TOKEN)
+bot = Bot(token=TOKEN, parse_mode='HTML')
 dp = Dispatcher(bot, storage=storage)
 
