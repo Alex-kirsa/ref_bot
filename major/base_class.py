@@ -120,27 +120,25 @@ class BaseText:
     async def creating(state):
         data_state = await state.get_data()
         step = data_state.get('creating_step')
-        match step:
-            case 'create_title':
-                return 'Введите название:'
-            case 'create_text':
-                return 'Введите описание:'
-            case 'create_photo':
-                return 'Отправьте фото:'
-            case 'create_goal':
-                return 'Укажите количество подписчиков:'
-            case 'done_text':
-                return 'Укажите текст который будет отправлен после выполнения раздачи:'
+        if step == 'create_title':
+            return 'Введите название:'
+        elif step == 'create_text':
+            return 'Введите описание:'
+        elif step == 'create_photo':
+            return 'Отправьте фото:'
+        elif step == 'create_goal':
+            return 'Укажите количество подписчиков:'
+        elif step == 'done_text':
+            return 'Укажите текст, который будет отправлен после выполнения раздачи:'
 
     @staticmethod
     async def creating_mail(state):
         data_state = await state.get_data()
         step = data_state.get('creating_mail_step')
-        match step:
-            case 'create_mailing_text':
-                return 'Введите текст рассылки:'
-            case 'create_mailing_photo':
-                return 'Добавьте фото:'
+        if step == 'create_mailing_text':
+            return 'Введите текст рассылки:'
+        elif step == 'create_mailing_photo':
+            return 'Добавьте фото:'
 
 
 class Buttons(BaseMarkup):
@@ -242,7 +240,7 @@ class Buttons(BaseMarkup):
     async def _type_mailing(self):
         await self.state.update_data(**{'type_mailing': self.call.data})
         return {
-            "text":  self.text.stock.get('mailing_creating'),
+            "text": self.text.stock.get('mailing_creating'),
             'reply_markup': await self.create_mailing(self.state),
             "state": UserStates.create_mail}
 
