@@ -6,7 +6,7 @@ from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 from dispather import bot, dp
 from major import UserManager
 
-chanel_id = -1002093034927
+chanel_id = -1002014371596
 chanel_url = 'https://t.me/+xoB1r2ptGt8yNGVi'
 
 
