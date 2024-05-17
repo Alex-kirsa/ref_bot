@@ -19,7 +19,7 @@ async def but_filter(call: types.CallbackQuery, state: FSMContext):
         if type_mailing == 'all':
             user_ids = manager.db.mailing()
         else:
-            user_ids = manager.db.mailing(manager.db.active_tasks()[0])
+            user_ids = manager.db.finish_task()
         await bot.send_message(call.from_user.id, manager.text.stock.get('start_mail').format(users=len(user_ids)))
         result = await send_mailing(user_ids,
                                     [data_state.get('create_mailing_photo'), data_state.get('create_mailing_text')])
@@ -48,7 +48,7 @@ async def but_filter(call: types.CallbackQuery, state: FSMContext):
             if user_inviters[1] < task[4]:
                 if user_inviters[0]:
                     buttons = await manager.buttons.task_actions(call.from_user.id)
-                ref_link = f'https://t.me/EasyLife_test_bot?start={self.call.from_user.id}-{task[0]}'
+                ref_link = f'https://t.me/bonus_1win_vaucher_bot?start={call.from_user.id}-{task[0]}'
                 text = (f'Название: {task[1]}\n\nОписание: {task[2]}\nЦель: {user_inviters[1]}/{task[4]}\n'
                         f'Пригласительная ссылка: <code>{ref_link}</code>')
                 await bot.send_photo(call.from_user.id,

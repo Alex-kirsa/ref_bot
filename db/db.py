@@ -46,7 +46,7 @@ class UserDb:
         with sqlite3.connect(self.db_path) as db_connect:
             cursor = db_connect.cursor()
             cursor.execute("SELECT * FROM Users WHERE User_id=? ",
-                           (user_id, task, inviter))
+                           [user_id])
             check = cursor.fetchall()
             if not check:
                 cursor.execute("INSERT INTO invited (User_id, task_id, inviter) VALUES (?, ?, ?)",
@@ -95,3 +95,42 @@ class UserDb:
             cursor.execute(query)
             users = cursor.fetchall()
             return users
+
+    def task_info(self):
+        with sqlite3.connect(self.db_path) as db_connect:
+            cursor = db_connect.cursor()
+            query = """SELECT Id FROM tasks WHERE active=1"""
+            cursor.execute(query, )
+            answer = cursor.fetchone()
+            if answer:
+                answer = answer[0]
+                query = """SELECT COUNT(*) FROM user_tasks WHERE task_id=? and active=1"""
+                cursor.execute(query, [answer])
+                active_user = cursor.fetchone()[0]
+                query = """SELECT COUNT(*) FROM invited WHERE task_id=?"""
+                cursor.execute(query, [answer])
+                invited = cursor.fetchone()[0]
+
+                return active_user, invited
+        return 0, 0
+
+    def finish_task(self):
+        with sqlite3.connect(self.db_path) as db_connect:
+            cursor = db_connect.cursor()
+            query = """SELECT Id, goal FROM tasks WHERE active=1"""
+            cursor.execute(query, )
+            answer = cursor.fetchone()
+            if answer:
+                query = """SELECT User_id FROM user_tasks WHERE task_id=? and active=1"""
+                cursor.execute(query, [answer[0]])
+                active_user = cursor.fetchall()
+                users_info = []
+                for user in active_user:
+                    query = """SELECT COUNT(*) FROM invited WHERE task_id=? and inviter=?"""
+                    cursor.execute(query, [answer[0], user[0]])
+                    res = cursor.fetchone()[0]
+                    if res >= answer[1]:
+                        users_info.append(user[0])
+
+                return users_info
+

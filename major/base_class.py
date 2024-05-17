@@ -201,8 +201,12 @@ class Buttons(BaseMarkup):
 
     async def _active_task(self):
         task = self.db.active_tasks()
+        task_info = self.db.task_info()
+        finish_task = self.db.finish_task()
         if task:
-            text = f'Название: {task[1]}\n\nОписание: {task[2]}\nЦель:{task[4]}'
+            text = (f'Название: {task[1]}\n\nОписание: {task[2]}\nЦель: {task[4]}\n\nУчастников: {task_info[0]}\n'
+                    f'Учасников завершили: {len(finish_task)}\n'
+                    f'Приглашенных: {task_info[1]}')
             return {
                 "text": text,
                 "state": UserStates.task,
