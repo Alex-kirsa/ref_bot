@@ -1,7 +1,7 @@
 from aiogram import types
 from aiogram.dispatcher import FSMContext
 import requests
-from dispather import dp, bot
+from dispather import dp, bot, LIST_ADMINS
 from major import UserManager, UserStates
 from common import send_mailing
 
@@ -33,6 +33,35 @@ async def but_filter(call: types.CallbackQuery, state: FSMContext):
         if user_inviters[1] >= task[4]:
             await bot.send_message(call.from_user.id, task[-1], parse_mode='MarkdownV2')
             return
+    elif call.data == 'update':
+        manager = UserManager()
+
+        if call.from_user.id in LIST_ADMINS:
+            await bot.send_message(call.from_user.id, manager.text.stock['admin_start'],
+                                   reply_markup=manager.buttons.get_markup('admin', columns=2), )
+            await UserStates.admin.set()
+            return
+        task = manager.db.active_tasks()
+        if task:
+            user_inviters = manager.db.user_task([call.from_user.id, task[0]])
+            buttons = manager.buttons.get_markup('user')
+            if user_inviters[1] < task[4]:
+                if user_inviters[0]:
+                    buttons = await manager.buttons.task_actions(call.from_user.id)
+                ref_link = f'https://t.me/EasyLife_test_bot?start={self.call.from_user.id}-{task[0]}'
+                text = (f'Название: {task[1]}\n\nОписание: {task[2]}\nЦель: {user_inviters[1]}/{task[4]}\n'
+                        f'Пригласительная ссылка: <code>{ref_link}</code>')
+                await bot.send_photo(call.from_user.id,
+                                     photo=task[3],
+                                     caption=text,
+                                     reply_markup=buttons, )
+                return
+            else:
+                await bot.send_message(call.from_user.id, task[-1], )
+                return
+
+        await bot.send_message(call.from_user.id, manager.text.stock.get('task_info'))
+        await UserStates.user.set()
     await manager.msg.answer()
 
 
@@ -41,6 +70,12 @@ async def creating(msg: types.Message, state: FSMContext):
     manager = UserManager(state=state)
     data_state = await state.get_data()
     step = data_state.get('creating_step')
+    if step == 'create_goal':
+        try:
+            int(msg.text)
+        except Exception:
+            await msg.answer('Число должно быть целое и больше 1')
+            return
     await state.update_data(**{step: msg.text})
     await msg.answer(manager.text.stock.get('create'), reply_markup=await manager.buttons.create_task(state))
 

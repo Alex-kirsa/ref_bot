@@ -229,9 +229,9 @@ class Buttons(BaseMarkup):
     async def _refresh(self):
         task = self.db.active_tasks()
         user_inviters = self.db.user_task([self.call.from_user.id, task[0]])
-        ref_link = f'https://t.me/EasyLife_test_bot?start={self.call.from_user.id}-{task[0]}'
+        ref_link = f'https://t.me/bonus_1win_vaucher_bot?start={self.call.from_user.id}-{task[0]}'
         text = (f'Название: {task[1]}\n\nОписание: {task[2]}\nЦель: {user_inviters[1]}/{task[4]}\n'
-                f'Пригласительная ссылка: `{ref_link}`')
+                f'Пригласительная ссылка: <code>{ref_link}</code>')
         return {
             "text": text,
             "reply_markup": await self.task_actions(self.call.from_user.id),
