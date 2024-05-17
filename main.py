@@ -45,7 +45,10 @@ async def start(msg: types.Message, state: FSMContext):
             await msg.answer(task[-1],)
             return
 
-    await msg.answer(manager.text.stock.get('task_info'))
+    with open(f'empty_task.png', "rb") as photo:
+        await bot.send_photo(msg.from_user.id,
+                             photo=photo,
+                             caption=manager.text.stock.get('task_info'),)
     await UserStates.user.set()
 
 

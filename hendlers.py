@@ -31,7 +31,7 @@ async def but_filter(call: types.CallbackQuery, state: FSMContext):
         task = manager.db.active_tasks()
         user_inviters = manager.db.user_task([call.from_user.id, task[0]])
         if user_inviters[1] >= task[4]:
-            await bot.send_message(call.from_user.id, task[-1], parse_mode='MarkdownV2')
+            await bot.send_message(call.from_user.id, task[-1],)
             return
     elif call.data == 'update':
         manager = UserManager()
