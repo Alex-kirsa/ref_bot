@@ -45,7 +45,7 @@ class UserDb:
     def add_referral_task(self, user_id, task, inviter):
         with sqlite3.connect(self.db_path) as db_connect:
             cursor = db_connect.cursor()
-            cursor.execute("SELECT * FROM invited WHERE User_id=? and task_id=? and inviter=?",
+            cursor.execute("SELECT * FROM Users WHERE User_id=? ",
                            (user_id, task, inviter))
             check = cursor.fetchall()
             if not check:
