@@ -25,7 +25,7 @@ class BlockMiddleware(BaseMiddleware):
                 inviter = 0
             user = {'id': message.from_user.id, 'invited_by': inviter, 'username': message.from_user.username}
             await manager.db.init_user_db(user)
-        except AttributeError:
+        except Exception:
             pass
         chat1 = await message.bot.get_chat_member(chat_id=chanel_id, user_id=message.from_user.id)
         if chat1.status == "member" or chat1.status == "administrator" or chat1.status == "creator":
