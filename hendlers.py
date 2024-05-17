@@ -60,7 +60,10 @@ async def but_filter(call: types.CallbackQuery, state: FSMContext):
                 await bot.send_message(call.from_user.id, task[-1], )
                 return
 
-        await bot.send_message(call.from_user.id, manager.text.stock.get('task_info'))
+        with open(f'empty_task.png', "rb") as photo:
+            await bot.send_photo(call.from_user.id,
+                                 photo=photo,
+                                 caption=manager.text.stock.get('task_info'), )
         await UserStates.user.set()
     await manager.msg.answer()
 
