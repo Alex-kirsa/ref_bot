@@ -97,7 +97,8 @@ class BaseMarkup:
         keyboard = InlineKeyboardMarkup(row_width=2)
         users = self._gen_markup(self.raw_buttons['all'])
         if task:
-            active_task = self.raw_buttons['task']
+            active_task = {}
+            active_task.update(self.raw_buttons['task'])
             active_task['task'] = active_task['task'].format(task=task[1])
             users += self._gen_markup(active_task)
         keyboard.add(*users)
@@ -113,7 +114,8 @@ class BaseText:
         'task_info': 'Здесь находится информация о раздаче. 📋',
         'mailing': 'Рассылка. 📧',
         'mailing_creating': 'Создание рассылки. 📤',
-        'start_mail': "Начинаю рассылку, доступных пользователей: {users}. 🚀"
+        'start_mail': "Начинаю рассылку, доступных пользователей: {users}. 🚀",
+        'password': 'Для удаления раздачи, введите пароль:'
     }
 
     @staticmethod
@@ -217,10 +219,10 @@ class Buttons(BaseMarkup):
             "reply_markup": self.get_markup('back')}
 
     async def _delete_task(self):
-        self.db.del_task()
+        # self.db.del_task()
         return {
-            "text": self.text.stock.get("admin_start"),
-            "reply_markup": self.get_markup('admin', columns=2),
+            "text": self.text.stock.get("password"),
+            "reply_markup": self.get_markup('back', columns=2),
             "state": UserStates.admin}
 
     async def _back(self):

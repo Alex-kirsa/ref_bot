@@ -12,7 +12,8 @@ async def but_filter(call: types.CallbackQuery, state: FSMContext):
     if call.data == 'send':
         await call.answer(manager.text.stock.get('send_task'), show_alert=True)
     elif call.data == 'delete_task':
-        await call.answer(manager.text.stock.get('del_task'), show_alert=True)
+        pass
+        # await call.answer(manager.text.stock.get('del_task'), show_alert=True)
     elif call.data == 'send_mailing':
         data_state = await state.get_data()
         type_mailing = data_state.get('type_mailing')
@@ -31,7 +32,7 @@ async def but_filter(call: types.CallbackQuery, state: FSMContext):
         task = manager.db.active_tasks()
         user_inviters = manager.db.user_task([call.from_user.id, task[0]])
         if user_inviters[1] >= task[4]:
-            await bot.send_message(call.from_user.id, task[-1],)
+            await bot.send_message(call.from_user.id, task[-1], )
             return
     elif call.data == 'update':
         manager = UserManager()
@@ -116,3 +117,13 @@ async def save_photo(message: types.Message, state: FSMContext):
     await message.answer(manager.text.stock.get('mailing_creating'),
                          reply_markup=await manager.buttons.create_mailing(state))
     await UserStates.create_mail.set()
+
+
+@dp.message_handler(content_types=["text"], state=UserStates.admin)
+async def save_photo(message: types.Message, state: FSMContext):
+    manager = UserManager(state=state)
+    if message.text == '0990':
+        manager.db.del_task()
+        await message.answer(manager.text.stock.get('del_task'), reply_markup=manager.buttons.get_markup('back'))
+    else:
+        await message.answer('Пароль не верный!!🫣', reply_markup=manager.buttons.get_markup('back'))
